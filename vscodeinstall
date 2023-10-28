@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ -x /usr/bin/lsb_release ]; then
+	dist_name=$(lsb_release -is)
+	if [ "$dist_name" = "Ubuntu" ]; then
+		sudo snap install code --classic
+	else
+		echo "This command can't work on $dist_name"
+	fi
+else
+	echo "Unknown linux"
+fi
+
+
