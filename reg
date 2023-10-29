@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [ -x /usr/bin/lsb_release ]; then
+	dist_name=$(lsb_release -is)
+	if [ "$dist_name" = "Ubuntu" ]; then
+		if ["$(id -u)" != "0"]; then
+			echo "This script can running with sudo command (super-user)"
+			exit 1
+		fi
+		if [$# -ne 1]; then
+			echo "Use: $0 <path_to_command>"
+			exit 1
+		fi
+		command="$1"
+		if [! -f "$command"]; then
+			echo "File $command command is not in path"
+			exit 1
+		fi
+		cp "$command" /usr/local/bin/
+		chmod 755 "/usr/local/bin/$(basename "$command")"
+		echo "Succsess command save to /usr/local/bin/"
+		exit 0
+	else
+		echo "This command can't work on $dist_name"
+		exit 1
+	fi
+else
+	echo "Unknown Linux"
+	exit 1
+fi
+
+
